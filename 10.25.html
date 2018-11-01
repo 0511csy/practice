@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+        }
+        ul{
+            margin: 40px auto;
+            width: 480px;
+            height: 60px;
+            background: #e33e0f;
+        }
+        li{
+            float: left;
+            width: 160px;
+            list-style:none;
+            color:white;
+            text-align:center;
+            line-height: 56px;
+            font-size: 16px;
+            cursor:pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slider{
+            height: 4px;
+            background: #0faaf9;
+            bottom: 0;
+        }
+        .ripple{
+            width: 0;
+            height: 0;
+            position: absolute;
+            border-radius: 50%;
+            opacity: 1;
+            background: rgba(255, 255, 255, 0.4);
+            -webkit-transform: scale(0);
+            -ms-transform: scale(0);
+            transform: scale(0);
+        }
+        .rippleEffect{
+            webkit-animation: MyRipple .4s linear;
+            animation: MyRipple 0.3s linear;
+        }
+        @-webkit-keyframes
+        MyRipple {  100% {
+            -webkit-transform: scale(2);
+            transform: scale(2);
+            opacity: 0;
+        }
+        }
+        @keyframes MyRipple {
+            100%{
+                -webkit-transform: scale(2);
+                transform: scale(2);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+<ul>
+    <li >TAB ONE</li>
+    <li>TAB TWO</li>
+    <li>TAB THREE</li>
+    <li class="slider"></li>
+</ul>
+<script src="jquery-3.1.1.min.js"></script>
+<script>
+    $(function () {
+        $("li").click(
+            function (e) {
+                if($(this).hasClass("slider")){
+                    return;
+                }
+                var n = $(this).index();
+                var how = n * 160;
+                $(".slider").css({
+                    left: how + "px"
+                });
+                $(".ripple").remove();
+                var posX = $(this).offset().left;
+                var posY = $(this).offset().top;
+                var buttonWidth = $(this).width();
+                var buttonHeight = $(this).height();
+                $(this).append("<span class='ripple'></span>");
+                if (buttonWidth <= buttonHeight) {
+                    buttonWidth = buttonHeight;
+                } else {
+                    buttonHeight = buttonWidth;
+                }
+                var x = e.pageX - posX - buttonWidth / 2;
+                var y = e.pageY - posY - buttonHeight / 2;
+                $(".ripple").css({
+                    width: buttonWidth,
+                    height: buttonHeight,
+                    top: y + "px",
+                    left: x + "px"
+                }).addClass("rippleEffect");
+            });
+
+    });
+</script>
+</body>
+</html>
